@@ -94,32 +94,32 @@ def load_faces():
     Load Face names and images in faces file
     :return:
     """
-    #try:
-    global known_face_encodings
-    global known_face_names
+    try:
+        global known_face_encodings
+        global known_face_names
 
-    known_face_encodings = []
+        known_face_encodings = []
 
-    dirpath = f'{os.getcwd()}/faces/'
+        dirpath = f'{os.getcwd()}/faces/'
 
-    if len(f'{os.getcwd()}/faces') == 0:
-        no_image = Label(root, text="No Image To Load")
-        no_image.grid(column=1, row=0)
+        if len(f'{os.getcwd()}/faces') == 0:
+            no_image = Label(root, text="No Image To Load")
+            no_image.grid(column=1, row=0)
 
-    for image in sorted(os.listdir(dirpath), key=lambda x: os.path.getctime(dirpath+x)):
-        person_image = face_recognition.load_image_file(f'faces/{image}')
-        person_encode = face_recognition.face_encodings(person_image, num_jitters=5)[0]
-        known_face_encodings.append(person_encode)
-        if len(known_face_encodings) == len(os.listdir(f'{os.getcwd()}/faces')):
-            break
+        for image in sorted(os.listdir(dirpath), key=lambda x: os.path.getctime(dirpath+x)):
+            person_image = face_recognition.load_image_file(f'faces/{image}')
+            person_encode = face_recognition.face_encodings(person_image, num_jitters=5)[0]
+            known_face_encodings.append(person_encode)
+            if len(known_face_encodings) == len(os.listdir(f'{os.getcwd()}/faces')):
+                break
 
 
-    Names_cursor.execute('''SELECT * FROM ALLNAMES''')
-    rows = [r[0] for r in Names_cursor]
+        Names_cursor.execute('''SELECT * FROM ALLNAMES''')
+        rows = [r[0] for r in Names_cursor]
 
-    known_face_names = rows
-    #except Exception as e:
-    #    messagebox.showerror("Load Faces and Names Error", str(e))
+        known_face_names = rows
+    except Exception as e:
+        messagebox.showerror("Load Faces and Names Error", str(e))
 
 load_faces()
 
@@ -131,12 +131,12 @@ def load_names_in_dicts():
     Dictionaries For each person's last in and out time
     :return:
     """
-    #try:
-    for keys in known_face_names:
-        in_minutes[f'{keys}'] = ""
-        out_minutes[f'{keys}'] = ""
-    #except Exception as e:
-    #    messagebox.showerror("Load Names to Dicts Error", str(e))
+    try:
+        for keys in known_face_names:
+            in_minutes[f'{keys}'] = ""
+            out_minutes[f'{keys}'] = ""
+    except Exception as e:
+        messagebox.showerror("Load Names to Dicts Error", str(e))
 
 load_names_in_dicts()
 
